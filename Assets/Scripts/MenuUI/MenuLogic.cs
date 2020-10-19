@@ -3,30 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace UIController
 {
     public class MenuLogic : MonoBehaviour
     {
+
+        [Header("Main Menu Components")]
         public GameObject mainMenu;
         public GameObject optionMenu;
+
+        [Header("Option Mena Components")]
         public Slider MasterSound;
         public Slider MusicSound;
         public Slider SFXSound;
-        MenuButtonController mbc;
-        MenuButton mb;
-        int index;
+
+        [Header("Menu AudioSources")]
+        public AudioSource myListen;
+        public AudioClip switchAudio;
+        public AudioClip selectAudio;
         
         void Start()
         {
-            mbc = GetComponent<MenuButtonController>();
-            mb = GetComponentInChildren<MenuButton>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            Debug.Log(mbc.index);
+            myListen = EventSystem.current.currentSelectedGameObject.GetComponent<AudioSource>();
+            /*Debug.Log(mbc.index);
             if (Input.GetAxis("Submit") == 1)
             {
                 index = mbc.index;
@@ -41,16 +47,15 @@ namespace UIController
                     default:
                         break;
                 }
-            }
+            }*/
         }
-        void PlayGame()
+        public void PlayGame()
         {
-            SceneManager.LoadScene(1);
+            StartCoroutine("WaitForLoad");
         }
-        void SelecOptions()
+        public void SelecOptions()
         {
-            mainMenu.gameObject.SetActive(false);
-            optionMenu.SetActive(true);
+            StartCoroutine("WaitForOptions");
         }
         void SaveSettings()
         {
@@ -60,10 +65,31 @@ namespace UIController
         {
             
         }
-        void GameExit()
+        public void GameExit()
         {
             Debug.Log("Quitting");
             Application.Quit();
+        }
+
+
+        public void HoverPlay()
+        {
+            myListen.PlayOneShot(switchAudio);
+        }
+        public void SelectPlay()
+        {
+            myListen.PlayOneShot(selectAudio);
+        }
+        public IEnumerator WaitForLoad()
+        {
+            yield return new WaitForSeconds(.15f);
+            SceneManager.LoadScene(1);
+        }
+        public IEnumerator WaitForOptions()
+        {
+            yield return new WaitForSeconds(.15f);
+            mainMenu.gameObject.SetActive(false);
+            optionMenu.SetActive(true);
         }
     }
 }
