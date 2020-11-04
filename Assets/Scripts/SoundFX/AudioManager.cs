@@ -45,7 +45,7 @@ public class AudioManager : MonoBehaviour
     {
         DontDestroyOnLoad(this.gameObject);
         MenuLogic manager = new MenuLogic();
-        musicValue = (int)manager.MusicSound.value;
+        //musicValue = (int)manager.MusicSound.value;
         TrackSelector = Random.Range(0, N);
         musicSource = this.gameObject.AddComponent<AudioSource>();
         musicSource.loop = true;
