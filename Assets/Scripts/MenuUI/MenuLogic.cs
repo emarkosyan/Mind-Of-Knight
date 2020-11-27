@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using System;
+using ProceduralToolkit.Samples.UI;
 
 namespace UIController
 {
@@ -25,10 +26,14 @@ namespace UIController
         public Toggle vsync_check;
         public Toggle fullscreenToggle;
 
+        public float GammaCorrection;
+        public Slider SliderBright;
+
         #region OptionsConsts
         private const string RESOLUTION_PREF_KEY = "resolution";
         private const string FULLSCREEN_PREF_KEY = "fullscreen";
         private const string VSYNC_PREF_KEY = "vsync";
+        private const string GAMMA_PREF_KEY = "gamma";
         #endregion
         private Resolution[] resolutions;
 
@@ -60,6 +65,8 @@ namespace UIController
                 CloseOptions();
             OpenMenu();
 
+            
+
 
             /*Debug.Log(mbc.index);
             if (Input.GetAxis("Submit") == 1)
@@ -86,14 +93,7 @@ namespace UIController
         {
             StartCoroutine("WaitForOptions");
         }
-        void SaveSettings()
-        {
-            
-        }
-        void SetFullScreen(bool isFullscreen)
-        {
-            
-        }
+        
         public void GameExit()
         {
             Debug.Log("Quitting");
@@ -201,6 +201,13 @@ namespace UIController
 
             Debug.Log(QualitySettings.vSyncCount);
 
+        }
+
+        private void OnGUI()
+        {
+            GammaCorrection = SliderBright.value;
+            RenderSettings.ambientLight = new Color(GammaCorrection, GammaCorrection, GammaCorrection, 1);
+            Debug.Log(RenderSettings.ambientLight);
         }
 
         public void LoadSetting()
